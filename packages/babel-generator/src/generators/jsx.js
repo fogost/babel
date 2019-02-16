@@ -43,7 +43,13 @@ export function JSXSpreadChild(node: Object) {
 }
 
 export function JSXText(node: Object) {
-  this.token(node.value);
+  const raw = this.getPossibleRaw(node);
+
+  if (raw != null) {
+    this.token(raw);
+  } else {
+    this.token(node.value);
+  }
 }
 
 export function JSXElement(node: Object) {
@@ -67,6 +73,7 @@ function spaceSeparator() {
 export function JSXOpeningElement(node: Object) {
   this.token("<");
   this.print(node.name, node);
+  this.print(node.typeParameters, node); // TS
   if (node.attributes.length > 0) {
     this.space();
     this.printJoin(node.attributes, node, { separator: spaceSeparator });
@@ -85,4 +92,28 @@ export function JSXClosingElement(node: Object) {
   this.token(">");
 }
 
-export function JSXEmptyExpression() {}
+export function JSXEmptyExpression(node: Object) {
+  this.printInnerComments(node);
+}
+
+export function JSXFragment(node: Object) {
+  this.print(node.openingFragment, node);
+
+  this.indent();
+  for (const child of (node.children: Array<Object>)) {
+    this.print(child, node);
+  }
+  this.dedent();
+
+  this.print(node.closingFragment, node);
+}
+
+export function JSXOpeningFragment() {
+  this.token("<");
+  this.token(">");
+}
+
+export function JSXClosingFragment() {
+  this.token("</");
+  this.token(">");
+}

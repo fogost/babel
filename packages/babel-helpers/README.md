@@ -1,21 +1,19 @@
-# babel-helpers
+# @babel/helpers
 
 > Collection of helper functions used by Babel transforms.
 
+See our website [@babel/helpers](https://babeljs.io/docs/en/next/babel-helpers.html) for more information.
+
 ## Install
 
+Using npm:
+
 ```sh
-npm install --save-dev babel-helpers
+npm install --save-dev @babel/helpers
 ```
 
-## Usage
+or using yarn:
 
-```js
-import * as helpers from 'babel-helpers';
-import * as t from 'babel-types';
-
-const typeofHelper = helpers.get('typeof');
-
-t.isExpressionStatement(typeofHelper);
-// true
+```sh
+yarn add @babel/helpers --dev
 ```

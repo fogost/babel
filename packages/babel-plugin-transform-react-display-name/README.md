@@ -1,51 +1,19 @@
-# babel-plugin-transform-react-display-name
+# @babel/plugin-transform-react-display-name
 
 > Add displayName to React.createClass calls
 
-## Example
+See our website [@babel/plugin-transform-react-display-name](https://babeljs.io/docs/en/next/babel-plugin-transform-react-display-name.html) for more information.
 
-**In**
+## Install
 
-```js
-var foo = React.createClass({});
-```
-
-**Out**
-
-```js
-var foo = React.createClass({
-  displayName: "foo"
-});
-```
-
-## Installation
+Using npm:
 
 ```sh
-npm install --save-dev babel-plugin-transform-react-display-name
+npm install --save-dev @babel/plugin-transform-react-display-name
 ```
 
-## Usage
-
-### Via `.babelrc` (Recommended)
-
-**.babelrc**
-
-```json
-{
-  "plugins": ["transform-react-display-name"]
-}
-```
-
-### Via CLI
+or using yarn:
 
 ```sh
-babel --plugins transform-react-display-name script.js
-```
-
-### Via Node API
-
-```javascript
-require("babel-core").transform("code", {
-  plugins: ["transform-react-display-name"]
-});
+yarn add @babel/plugin-transform-react-display-name --dev
 ```

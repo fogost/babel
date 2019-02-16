@@ -1,74 +1,19 @@
-# babel-plugin-transform-react-constant-elements
+# @babel/plugin-transform-react-constant-elements
 
 > Treat React JSX elements as value types and hoist them to the highest scope
 
-## Example
+See our website [@babel/plugin-transform-react-constant-elements](https://babeljs.io/docs/en/next/babel-plugin-transform-react-constant-elements.html) for more information.
 
-**In**
+## Install
 
-```jsx
-const Hr = () => {
-  return <hr className="hr" />;
-};
-```
-
-**Out**
-
-```jsx
-const _ref = <hr className="hr" />;
-
-const Hr = () => {
-  return _ref;
-};
-```
-
-**Deopts**
-
-- **Spread Operator**
-
-  ```jsx
-  <div {...foobar} />
-  ```
-
-- **Refs**
-
-  ```jsx
-  <div ref="foobar" />
-  <div ref={node => this.node = node} />
-  ```
-
-## Installation
+Using npm:
 
 ```sh
-npm install --save-dev babel-plugin-transform-react-constant-elements
+npm install --save-dev @babel/plugin-transform-react-constant-elements
 ```
 
-## Usage
-
-### Via `.babelrc` (Recommended)
-
-**.babelrc**
-
-```json
-{
-  "plugins": ["transform-react-constant-elements"]
-}
-```
-
-### Via CLI
+or using yarn:
 
 ```sh
-babel --plugins transform-react-constant-elements script.js
+yarn add @babel/plugin-transform-react-constant-elements --dev
 ```
-
-### Via Node API
-
-```javascript
-require("babel-core").transform("code", {
-  plugins: ["transform-react-constant-elements"]
-});
-```
-
-## References
-
-* [[facebook/react#3226] Optimizing Compiler: Reuse Constant Value Types like ReactElement](https://github.com/facebook/react/issues/3226)

@@ -1,49 +1,19 @@
-# babel-plugin-transform-flow-strip-types
+# @babel/plugin-transform-flow-strip-types
 
-> Strip all [flow](http://flowtype.org) type annotations and declarations from your output code.
+> Strip flow type annotations from your output code.
 
-## Example
+See our website [@babel/plugin-transform-flow-strip-types](https://babeljs.io/docs/en/next/babel-plugin-transform-flow-strip-types.html) for more information.
 
-**In**
+## Install
 
-```javascript
-function foo(one: any, two: number, three?): string {}
-```
-
-**Out**
-
-```javascript
-function foo(one, two, three) {}
-```
-
-## Installation
+Using npm:
 
 ```sh
-npm install --save-dev babel-plugin-transform-flow-strip-types
+npm install --save-dev @babel/plugin-transform-flow-strip-types
 ```
 
-## Usage
-
-### Via `.babelrc` (Recommended)
-
-**.babelrc**
-
-```json
-{
-  "plugins": ["transform-flow-strip-types"]
-}
-```
-
-### Via CLI
+or using yarn:
 
 ```sh
-babel --plugins transform-flow-strip-types script.js
-```
-
-### Via Node API
-
-```javascript
-require("babel-core").transform("code", {
-  plugins: ["transform-flow-strip-types"]
-});
+yarn add @babel/plugin-transform-flow-strip-types --dev
 ```

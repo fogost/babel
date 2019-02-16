@@ -1,8 +1,10 @@
-import * as t from "babel-types";
+import * as t from "@babel/types";
 import jsesc from "jsesc";
 
 export function Identifier(node: Object) {
-  this.word(node.name);
+  this.exactSource(node.loc, () => {
+    this.word(node.name);
+  });
 }
 
 export function RestElement(node: Object) {
@@ -10,9 +12,7 @@ export function RestElement(node: Object) {
   this.print(node.argument, node);
 }
 
-export {
-  RestElement as SpreadElement,
-};
+export { RestElement as SpreadElement };
 
 export function ObjectExpression(node: Object) {
   const props = node.properties;
@@ -33,7 +33,9 @@ export { ObjectExpression as ObjectPattern };
 
 export function ObjectMethod(node: Object) {
   this.printJoin(node.decorators, node);
-  this._method(node);
+  this._methodHead(node);
+  this.space();
+  this.print(node.body, node);
 }
 
 export function ObjectProperty(node: Object) {
@@ -45,8 +47,11 @@ export function ObjectProperty(node: Object) {
     this.token("]");
   } else {
     // print `({ foo: foo = 5 } = {})` as `({ foo = 5 } = {});`
-    if (t.isAssignmentPattern(node.value) && t.isIdentifier(node.key) &&
-      node.key.name === node.value.left.name) {
+    if (
+      t.isAssignmentPattern(node.value) &&
+      t.isIdentifier(node.key) &&
+      node.key.name === node.value.left.name
+    ) {
       this.print(node.value, node);
       return;
     }
@@ -54,10 +59,12 @@ export function ObjectProperty(node: Object) {
     this.print(node.key, node);
 
     // shorthand!
-    if (node.shorthand &&
+    if (
+      node.shorthand &&
       (t.isIdentifier(node.key) &&
-       t.isIdentifier(node.value) &&
-       node.key.name === node.value.name)) {
+        t.isIdentifier(node.value) &&
+        node.key.name === node.value.name)
+    ) {
       return;
     }
   }
@@ -111,7 +118,7 @@ export function NumericLiteral(node: Object) {
   const raw = this.getPossibleRaw(node);
   const value = node.value + "";
   if (raw == null) {
-    this.number(value);  // normalize
+    this.number(value); // normalize
   } else if (this.format.minified) {
     this.number(raw.length < value.length ? raw : value);
   } else {
@@ -119,7 +126,7 @@ export function NumericLiteral(node: Object) {
   }
 }
 
-export function StringLiteral(node: Object, parent: Object) {
+export function StringLiteral(node: Object) {
   const raw = this.getPossibleRaw(node);
   if (!this.format.minified && raw != null) {
     this.token(raw);
@@ -127,14 +134,32 @@ export function StringLiteral(node: Object, parent: Object) {
   }
 
   // ensure the output is ASCII-safe
-  const opts = {
-    quotes: t.isJSX(parent) ? "double" : this.format.quotes,
-    wrap: true,
-  };
+  const opts = this.format.jsescOption;
   if (this.format.jsonCompatibleStrings) {
     opts.json = true;
   }
   const val = jsesc(node.value, opts);
 
   return this.token(val);
+}
+
+export function BigIntLiteral(node: Object) {
+  const raw = this.getPossibleRaw(node);
+  if (!this.format.minified && raw != null) {
+    this.token(raw);
+    return;
+  }
+  this.token(node.value);
+}
+
+export function PipelineTopicExpression(node: Object) {
+  this.print(node.expression, node);
+}
+
+export function PipelineBareFunction(node: Object) {
+  this.print(node.callee, node);
+}
+
+export function PipelinePrimaryTopicReference() {
+  this.token("#");
 }
